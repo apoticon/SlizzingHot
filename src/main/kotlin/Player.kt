@@ -21,8 +21,12 @@ class Player {
         return credits
     }
 
-    fun placeBet(betAmount: Double) {
-        credits -= betAmount
+    fun placeBet(betAmount: Double): Boolean {
+        if (betAmount <= credits) {
+            credits -= betAmount
+            return true
+        }
+        return false
     }
 
     fun addCredits(creditAmount: Double) {

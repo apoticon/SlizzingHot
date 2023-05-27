@@ -22,14 +22,21 @@ class SlotMachine(private val player: Player, private val ui: UI) {
             ui.printCurrentStatus(player.getCredits())
 
             if (ui.wantToPlayAgain()) {
+
                 val betAmount = ui.getBetAmount()
-                player.placeBet(betAmount)
-                spin()
-                val winAmount = calculateWin()
-                val totalWin = winAmount * betAmount
-                player.addCredits(totalWin)
-                ui.printSpinResult(board, totalWin)
-                playSpinSound()
+                if (player.placeBet(betAmount)) {
+                    player.placeBet(betAmount)
+                    spin()
+                    val winAmount = calculateWin()
+                    val totalWin = winAmount * betAmount
+                    player.addCredits(totalWin)
+                    ui.printSpinResult(board, totalWin)
+                    playSpinSound()
+                }
+             else {
+                println("Insufficient credits. Please place a valid bet.")
+                continue
+            }
             } else {
                 break
             }
