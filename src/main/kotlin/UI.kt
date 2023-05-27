@@ -14,7 +14,17 @@ class UI {
     }
     fun getPlayerCredits(): Double {
         println("Hello, ${getPlayerName()}, how much money do you want to play with?")
-        return readLine()?.toDoubleOrNull() ?: 0.0
+        var credits: Double
+        while (true) {
+            val input = readLine()
+            if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
+                credits = input.toDouble()
+                break
+            } else {
+                println("Invalid input. Please enter a non-negative number of credits.")
+            }
+        }
+        return credits
     }
 
     fun printCurrentStatus(credits: Double) {
@@ -29,7 +39,17 @@ class UI {
 
     fun getBetAmount(): Double {
         println("How much do you want to bet?")
-        return readLine()?.toDoubleOrNull() ?: 0.0
+        var betAmount: Double
+        while (true) {
+            val input = readLine()
+            if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
+                betAmount = input.toDouble()
+                break
+            } else {
+                println("Invalid input. Please enter a non-negative bet amount.")
+            }
+        }
+        return betAmount
     }
 
     fun printSpinResult(board: Array<Array<String>>, totalWin: Double) {
