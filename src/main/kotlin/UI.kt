@@ -1,13 +1,17 @@
 class UI {
+    private var playerName: String = ""
+
     fun printWelcomeMessage() {
         println("Welcome to Slizzing Hot!")
     }
 
     fun getPlayerName(): String {
-        println("Please enter your name: ")
-        return readLine() ?: ""
+        return playerName
     }
 
+    fun setPlayerName(name: String) {
+        playerName = name
+    }
     fun getPlayerCredits(): Double {
         println("Hello, ${getPlayerName()}, how much money do you want to play with?")
         return readLine()?.toDoubleOrNull() ?: 0.0
