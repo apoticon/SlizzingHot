@@ -18,11 +18,14 @@ class UI {
         var credits: Double
         while (true) {
             val input = readLine()
-            if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
-                credits = roundToOneDecimal(input.toDouble())
+            try {
+                credits = input?.toDouble()?.let { roundToOneDecimal(it) } ?: throw NumberFormatException()
+                if (credits < 0) {
+                    throw NumberFormatException()
+                }
                 break
-            } else {
-                println("Invalid input. Please enter a non-negative number of credits.")
+            } catch (e: NumberFormatException) {
+                println("Invalid input. Please enter a number or a non-negative number of credits.")
             }
         }
         return credits
@@ -33,11 +36,14 @@ class UI {
         var betAmount: Double
         while (true) {
             val input = readLine()
-            if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
-                betAmount = roundToOneDecimal(input.toDouble())
+            try {
+                betAmount = input?.toDouble()?.let { roundToOneDecimal(it) } ?: throw NumberFormatException()
+                if (betAmount < 0) {
+                    throw NumberFormatException()
+                }
                 break
-            } else {
-                println("Invalid input. Please enter a non-negative bet amount.")
+            } catch (e: NumberFormatException) {
+                println("Invalid input. Please enter a number or a non-negative bet amount.")
             }
         }
         return betAmount
