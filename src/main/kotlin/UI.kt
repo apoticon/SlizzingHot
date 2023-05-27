@@ -1,3 +1,4 @@
+import kotlin.math.round
 class UI {
     private var playerName: String = ""
 
@@ -13,18 +14,33 @@ class UI {
         playerName = name
     }
     fun getPlayerCredits(): Double {
-        println("Hello, ${getPlayerName()}, how much money do you want to play with?")
+        println("Hello, how much money do you want to play with?")
         var credits: Double
         while (true) {
             val input = readLine()
             if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
-                credits = input.toDouble()
+                credits = roundToOneDecimal(input.toDouble())
                 break
             } else {
                 println("Invalid input. Please enter a non-negative number of credits.")
             }
         }
         return credits
+    }
+
+    fun getBetAmount(): Double {
+        println("How much do you want to bet?")
+        var betAmount: Double
+        while (true) {
+            val input = readLine()
+            if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
+                betAmount = roundToOneDecimal(input.toDouble())
+                break
+            } else {
+                println("Invalid input. Please enter a non-negative bet amount.")
+            }
+        }
+        return betAmount
     }
 
     fun printCurrentStatus(credits: Double) {
@@ -37,21 +53,6 @@ class UI {
         return input != "quit"
     }
 
-    fun getBetAmount(): Double {
-        println("How much do you want to bet?")
-        var betAmount: Double
-        while (true) {
-            val input = readLine()
-            if (input != null && input.toDoubleOrNull() ?: 0.0 >= 0) {
-                betAmount = input.toDouble()
-                break
-            } else {
-                println("Invalid input. Please enter a non-negative bet amount.")
-            }
-        }
-        return betAmount
-    }
-
     fun printSpinResult(board: Array<Array<String>>, totalWin: Double) {
         println("You won $totalWin credits!")
         println("Board:")
@@ -62,7 +63,9 @@ class UI {
             println()
         }
     }
-
+    private fun roundToOneDecimal(value: Double): Double {
+        return round(value * 10.0) / 10.0
+    }
     fun printGoodbyeMessage() {
         println("You have no more credits left. Thanks for playing!")
     }

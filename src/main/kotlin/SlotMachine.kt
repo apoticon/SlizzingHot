@@ -1,5 +1,6 @@
 import java.io.File
 import javax.sound.sampled.AudioSystem
+import kotlin.math.round
 
 class SlotMachine(private val player: Player, private val ui: UI) {
     private val symbols = arrayOf("🍒", "🍇", "🍊", "🔔", "💎", "7️⃣")
@@ -81,9 +82,13 @@ class SlotMachine(private val player: Player, private val ui: UI) {
             val count = board.count { it[2] == symbol }
             totalWin += symbolMultiplier[symbol]!! * count
         }
+        totalWin = roundToOneDecimal(totalWin)
         return totalWin
     }
 
+    private fun roundToOneDecimal(value: Double): Double {
+        return round(value * 10.0) / 10.0
+    }
     private fun playSpinSound() {
         val soundFile = File("spin_sound.wav")
         val audioInputStream = AudioSystem.getAudioInputStream(soundFile)
