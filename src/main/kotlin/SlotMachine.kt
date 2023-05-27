@@ -89,8 +89,19 @@ class SlotMachine(private val player: Player, private val ui: UI) {
         }
 
         totalWin = roundToOneDecimal(totalWin)
+        if (totalWin > 0)
+            playWinSound()
         return totalWin
     }
+
+    private fun playWinSound() {
+        val soundFile = File("win_sound.wav")
+        val audioInputStream = AudioSystem.getAudioInputStream(soundFile)
+        val clip = AudioSystem.getClip()
+        clip.open(audioInputStream)
+        clip.start()
+    }
+
     private fun roundToOneDecimal(value: Double): Double {
         return round(value * 10.0) / 10.0
     }

@@ -38,6 +38,7 @@ class UI {
             val input = readLine()
             try {
                 betAmount = input?.toDouble()?.let { roundToOneDecimal(it) } ?: throw NumberFormatException()
+                betAmount /=2
                 if (betAmount < 0) {
                     throw NumberFormatException()
                 }
@@ -70,7 +71,7 @@ class UI {
         }
     }
     private fun roundToOneDecimal(value: Double): Double {
-        return round(value * 10.0) / 10.0
+        return (round(value * 10.0) / 10.0)
     }
     fun printGoodbyeMessage() {
         println("You have no more credits left. Thanks for playing!")
