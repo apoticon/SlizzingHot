@@ -75,4 +75,12 @@ class UI {
     fun printGoodbyeMessage() {
         println("You have no more credits left. Thanks for playing!")
     }
+
+    fun getPlayerCreditsTestable(input: String): Double {
+        return  getPlayerCredits()
+    }
+
+    fun getBetAmountTestable(input: String): Double {
+        return getBetAmount()
+    }
 }

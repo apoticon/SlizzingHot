@@ -12,6 +12,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    testImplementation("org.testng:testng:7.1.0")
+    testImplementation ("junit:junit:4.13.2")
 }
 
 tasks.test {
@@ -24,4 +26,7 @@ kotlin {
 
 application {
     mainClass.set("MainKt")
+}
+tasks.withType<Test>{
+    useJUnitPlatform()
 }
