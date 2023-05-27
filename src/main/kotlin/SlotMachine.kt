@@ -4,13 +4,13 @@ import kotlin.math.round
 
 class SlotMachine(private val player: Player, private val ui: UI) {
     private val symbols = arrayOf("🍒", "🍇", "🍊", "🔔", "💎", "7️⃣")
-    private val symbolMultiplier = mapOf(
-        "🍒" to 0.2,
-        "🍇" to 0.4,
-        "🍊" to 0.6,
-        "🔔" to 0.8,
-        "💎" to 1.0,
-        "7️⃣" to 1.2
+    val winTable = mapOf(
+        "🍒" to mapOf(2 to 5, 3 to 20, 4 to 50, 5 to 200),
+        "🍇" to mapOf(3 to 50, 4 to 200, 5 to 500),
+        "🍊" to mapOf(3 to 20, 4 to 50, 5 to 200),
+        "🔔" to mapOf(3 to 20, 4 to 50, 5 to 200),
+        "💎" to mapOf(3 to 10, 4 to 50, 5 to 250),
+        "7️⃣" to mapOf(3 to 100, 4 to 1000, 5 to 5000)
     )
     private val board: Array<Array<String>> = Array(3) { Array(5) { "" } }
 
@@ -59,33 +59,38 @@ class SlotMachine(private val player: Player, private val ui: UI) {
     }
 
     private fun calculateWin(): Double {
+        val symbolInstances = mutableMapOf<String, Int>()
         var totalWin = 0.0
+
         for (i in 0..2) {
             val row = board[i]
             if (row[0] == row[1]) {
                 val symbol = row[0]
                 if (symbol == "🍒") {
-                    totalWin += symbolMultiplier[symbol]!!
+                    symbolInstances[symbol] = symbolInstances.getOrDefault(symbol, 0) + 2
                 } else if (row[1] == row[2]) {
-                    val count = row.count { it == symbol }
-                    totalWin += symbolMultiplier[symbol]!! * count
+                    symbolInstances[symbol] = symbolInstances.getOrDefault(symbol, 0) + 3
                 }
             }
         }
+
         if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
             val symbol = board[0][0]
-            val count = board.count { it[0] == symbol }
-            totalWin += symbolMultiplier[symbol]!! * count
+            symbolInstances[symbol] = symbolInstances.getOrDefault(symbol, 0) + 3
         }
         if (board[2][0] == board[1][1] && board[1][1] == board[0][2]) {
             val symbol = board[2][0]
-            val count = board.count { it[2] == symbol }
-            totalWin += symbolMultiplier[symbol]!! * count
+            symbolInstances[symbol] = symbolInstances.getOrDefault(symbol, 0) + 3
         }
+
+        for ((symbol, instances) in symbolInstances) {
+            val reward = winTable[symbol]?.getOrDefault(instances, 0) ?: 0
+            totalWin += reward
+        }
+
         totalWin = roundToOneDecimal(totalWin)
         return totalWin
     }
-
     private fun roundToOneDecimal(value: Double): Double {
         return round(value * 10.0) / 10.0
     }
